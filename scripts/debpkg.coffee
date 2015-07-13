@@ -24,13 +24,13 @@ queryVersion = (robot, msg, url, pkgname) ->
   return
 
 module.exports = (robot) ->
-  robot.hear /debpkg\s(\w+)/i, (msg) ->
-    console.log msg.match
-    pkg = msg.match[2]
+  robot.hear /debpkg\s(?<pkgname>\w+)/i, (msg) ->
+    console.log msg.match.pkgname
+    pkg = msg.match.pkgname
     queryVersion robot, msg, urlMap.debian, pkg
     return
-  robot.hear /ubupkg\s(\w+)/i, (msg) ->
-    pkg = msg.match[2]
+  robot.hear /ubupkg\s(?<pkgname>\w+)/i, (msg) ->
+    pkg = msg.match.pkgname
     queryVersion robot, msg, urlMap.ubuntu, pkg
     return
   return

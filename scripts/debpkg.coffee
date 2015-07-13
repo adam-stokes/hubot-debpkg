@@ -25,6 +25,7 @@ queryVersion = (robot, msg, url, pkgname) ->
 
 module.exports = (robot) ->
   robot.hear /debpkg\s(\w+)/i, (msg) ->
+    console.log msg.match
     pkg = msg.match[2]
     queryVersion robot, msg, urlMap.debian, pkg
     return

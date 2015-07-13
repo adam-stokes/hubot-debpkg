@@ -19,8 +19,7 @@ queryVersion = (robot, msg, url, pkgname) ->
     if err != null or res.statusCode != 200
       return msg.send("Unable to query for #{pkgname}, try again Señor.")
     for pkgLine in body.trim().split('\n')
-      [name, version, series, arch] = pkgLine.split('|')
-      msg.send "#{name} | #{version} | <#{series}>"
+      msg.send "#{pkgLine}"
   return
 
 module.exports = (robot) ->

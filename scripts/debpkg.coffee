@@ -14,7 +14,6 @@ urlMap =
 
 queryVersion = (robot, msg, url, pkgname) ->
   fetchUrl = "#{url}&package=#{pkgname}"
-  msg.send "Looking up via: #{fetchUrl}"
   robot.http(fetchUrl).get() (err, res, body) ->
     if err != null or res.statusCode != 200
       return msg.send("Unable to query for #{pkgname}, try again Señor.")

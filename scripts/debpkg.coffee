@@ -13,7 +13,9 @@ urlMap =
   ubuntu: "http://people.canonical.com/~ubuntu-archive/madison.cgi?text=on"
 
 queryVersion = (robot, msg, url, pkgname) ->
-  robot.http("#{url}&package=#{pkgname}").get() (err, res, body) ->
+  fetchUrl = "#{url}&package=#{pkgname}"
+  msg.send "Looking up via: #{fetchUrl}"
+  robot.http(fetchUrl).get() (err, res, body) ->
     if err != null or res.statusCode != 200
       return msg.send("Unable to query for #{pkgname}, try again Señor.")
     for pkgLine in body.split('\n')

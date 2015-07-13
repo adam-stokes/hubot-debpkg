@@ -1,6 +1,6 @@
 {
   "name": "hubot-debpkg",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "query debian/ubuntu package versions",
   "main": "index.coffee",
   "scripts": {

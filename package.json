@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/battlemidget/hubot-debpkg/issues"
   },
-  "homepage": "https://github.com/battlemidget/hubot-debpkg#readme"
+  "homepage": "https://github.com/battlemidget/hubot-debpkg#readme",
+  "dependencies": {
+    "lodash": "^3.10.0",
+    "request": "^2.60.0",
+    "xregexp": "^2.0.0"
+  }
 }

@@ -34,7 +34,6 @@ var pkgRe = xre("^\\s?" +
 
 function parseResult(line){
     var match = xre.exec(line, pkgRe);
-    console.log(match);
     var pkg = {
         name: match.pkgname,
         version: match.version,

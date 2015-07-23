@@ -2,15 +2,7 @@
 //   Reports latest debian/ubuntu package versions
 //
 // Commands:
-//   ubupkg <pkgname> - Query ubuntu's package archive
-//   debpkg <pkgname> - Query debian's package archive
-//
-// Example retrieval output:
-//
-// sosreport | 3.2-2 | jessie-kfreebsd | source, kfreebsd-amd64, kfreebsd-i386
-// sosreport | 3.2-2 | jessie          | source, amd64, arm64, armel, armhf, i386, mips, mipsel, powerpc, ppc64el, s390x
-// sosreport | 3.2-2 | stretch         | source, amd64, arm64, armel, armhf, i386, mips, mipsel, powerpc, ppc64el, s390x
-// sosreport | 3.2-2 | sid             | source, amd64, arm64, armel, armhf, hurd-i386, i386, kfreebsd-amd64, kfreebsd-i386, mips, mipsel, powerpc, ppc64el, s390x, sparc
+//   qpkg <pkgname> [:ubuntu] - Query debian or ubuntu's package archive
 //
 // Author:
 //   battlemidget
@@ -31,17 +23,18 @@ var urlMap = {
   ubuntu: "http://people.canonical.com/~ubuntu-archive/madison.cgi?text=on"
 };
 
-var pkgRe = xre("^\\s*" +
-                "(?<pkgname>[\\w+0-9\-\_]+)" +
-                "[\\s\|]+" +
-                "(?<version>[0-9\.\-]+)" +
-                "[\\s\|]+" +
-                "(?<series>[\\w+\-]+)" +
-                "[\\s\|]+" +
-                "(?<arch>[\\w+,\\s\-]+)", "ig");
+var pkgRe = xre("^\\s?" +
+                "(?<pkgname>[\\w\\d\\-\\_]+)" +
+                "[\\s\\|]+" +
+                "(?<version>[\\w\\d\\.\\-~]+)" +
+                "[\\s\\|]+" +
+                "(?<series>[\\w+\\-\\/]+)" +
+                "[\\s\\|]+" +
+                "(?<arch>[\\w+,\\s\\-]+)", "xg");
 
 function parseResult(line){
     var match = xre.exec(line, pkgRe);
+    console.log(match);
     var pkg = {
         name: match.pkgname,
         version: match.version,
@@ -56,8 +49,15 @@ function urlConCat(url, name){
 }
 
 module.exports = function(robot) {
-    robot.hear(/debpkg\s(\w+)/i, function(msg) {
-        request(urlConCat(urlMap.debian, msg.match[1]))
+    robot.respond(/qpkg ([A-z]+)\s?\:?(?:(\w+))?/i, function(msg) {
+        var pkgname = msg.match[1];
+        var isUbuntu = msg.match[2] ? msg.match[2] : false;
+        var archive = urlMap.debian;
+        if (isUbuntu) {
+            archive = urlMap.ubuntu;
+        }
+        var url = urlConCat(archive, pkgname);
+        request(url)
             .then(function(res){
                 var body = res[0].body.trim().split("\n");
                 var parsed = [];
@@ -71,7 +71,7 @@ module.exports = function(robot) {
                                   version: parsed.version,
                                   series: parsed.series}));
             }).catch(function(){
-                msg.send(unknownTmpl({pkg: msg.match[1]}));
+                msg.send(unknownTmpl({pkg: pkgname}));
             });
     });
 };

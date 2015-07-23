@@ -1,8 +1,8 @@
 {
   "name": "hubot-debpkg",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "query debian/ubuntu package versions",
-  "main": "index.coffee",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/battlemidget/hubot-debpkg#readme",
   "dependencies": {
+    "bluebird": "^2.9.34",
     "lodash": "^3.10.0",
     "request": "^2.60.0",
     "xregexp": "^2.0.0"

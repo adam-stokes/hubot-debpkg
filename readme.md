@@ -2,12 +2,11 @@
 
 ## Description
 
-Query madison for debian/ubuntu package versions
+>Query madison for debian/ubuntu package versions
 
 ## Commands
 ```
-  debpkg <package> - queries debian archive for package version
-  ubupkg <package> - queries ubuntu archive for package version
+  Hubot qpkg <package> [:ubuntu] - queries debian/ubuntu archive for package version
 ```
 
 ## Author
